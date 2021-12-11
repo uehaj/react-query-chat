@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-query';
+import { tables, fetcher, Message, User, Room } from '../fetchData';
 
 export default function ChatPanel() {
-  const [currentRoomId, setCurrentRoomId] = useState<string>('0001');
-  const rooms: { roomId: string, name: string }[] = [
-    { roomId: '0001', name: 'room1' },
-    { roomId: '0002', name: 'room2' }
-  ];
-  const messages: { messageId: string, datetime: string, roomId: string, userId: string, content: string }[] = [
-    { messageId: '0001', datetime: "2021/12/24: 10:00:00", roomId: '0001', userId: '1', content: 'こんばんは' },
-    { messageId: '0002', datetime: "2021/12/24: 11:00:00", roomId: '0001', userId: '2', content: 'こんにちは' },
-    { messageId: '0003', datetime: "2021/12/24: 12:00:00", roomId: '0002', userId: '3', content: 'オレはおります' },
-    { messageId: '0003', datetime: "2021/12/24: 13:00:00", roomId: '0002', userId: '4', content: 'なるほどっ' }
-  ];
-  const users: { userId: string, name: string }[] = [
-    { userId: '1', name: 'たんじろう' },
-    { userId: '2', name: 'いのすけ' },
-    { userId: '3', name: 'ぜんいつ' },
-    { userId: '4', name: 'れんごく' }
-  ];
+  const { data: messages } = useQuery<Message[]>('messages', fetcher(tables.messages))
+  const { data: rooms } = useQuery<Room[]>('rooms', fetcher(tables.rooms))
+  const { data: users } = useQuery<User[]>('users', fetcher(tables.users))
+  const [currentRoomId, setCurrentRoomId] = useState<number>();
 
   return (
     <>
-      Rooms
+      <p>CurrentRoomId: {currentRoomId}</p>
+      Rooms({rooms?.length})
       <ul>
-        {rooms?.map((room) => (
-          <li key={room.roomId} onClick={() => setCurrentRoomId(room.roomId)}>
-            {room.name}
-          </li>
-        ))}
+        {rooms
+          ?.map((room) => (
+            <li key={room.roomId} onClick={() => setCurrentRoomId(room.roomId)}>
+              {room.roomId}:{room.name}
+            </li>
+          ))}
       </ul>
-      Messages
+      Users:
       <ul>
-        {messages?.filter(message => message.roomId === currentRoomId)?.map((message) => (
-          <li>{message.datetime} : {users.find(user => user.userId === message.userId)?.name} {message.content}</li>
-        ))}
+        {users
+          ?.map((user) => (
+            <li key={user.userId} onClick={() => setCurrentRoomId(user.userId)}>
+              {user.userId}:{user.name}
+            </li>
+          ))}
+      </ul>
+      Messages({messages?.length})
+      <ul>
+        {
+          messages
+            ?.filter((message) => message.roomId === currentRoomId)
+            ?.map((message) => (
+              <li>{message.roomId} {message.createdAt} {users?.find((user) => user.userId === message.userId)?.name}:  {message.content}</li>
+            ))
+        }
       </ul>
     </>
   );
