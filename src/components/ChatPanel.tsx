@@ -3,10 +3,14 @@ import { useQuery } from 'react-query';
 import { tables, Message, User, Room } from '../fetchData';
 
 export default function ChatPanel() {
-  const { data: messages } = useQuery<Message[]>('messages', tables.messages.fetcher)
+  const { data: messages, isFetched: messageFetched } = useQuery<Message[]>('messages', tables.messages.fetcher)
   const { data: rooms } = useQuery<Room[]>('rooms', tables.rooms.fetcher)
   const { data: users } = useQuery<User[]>('users', tables.users.fetcher)
-  const [currentRoomId, setCurrentRoomId] = useState<number>();
+  const [currentRoomId, setCurrentRoomId] = useState<number>(0);
+
+  if (currentRoomId === 0 && messages) {
+    setCurrentRoomId(messages[0].roomId)
+  }
 
   return (
     <>
