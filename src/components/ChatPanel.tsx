@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { tables, fetcher, Message, User, Room } from '../fetchData';
+import { tables, Message, User, Room } from '../fetchData';
 
 export default function ChatPanel() {
-  const { data: messages } = useQuery<Message[]>('messages', fetcher(tables.messages))
-  const { data: rooms } = useQuery<Room[]>('rooms', fetcher(tables.rooms))
-  const { data: users } = useQuery<User[]>('users', fetcher(tables.users))
+  const { data: messages } = useQuery<Message[]>('messages', tables.messages.fetcher)
+  const { data: rooms } = useQuery<Room[]>('rooms', tables.rooms.fetcher)
+  const { data: users } = useQuery<User[]>('users', tables.users.fetcher)
   const [currentRoomId, setCurrentRoomId] = useState<number>();
 
   return (
@@ -24,7 +24,7 @@ export default function ChatPanel() {
       <ul>
         {users
           ?.map((user) => (
-            <li key={user.userId} onClick={() => setCurrentRoomId(user.userId)}>
+            <li key={user.userId}>
               {user.userId}:{user.name}
             </li>
           ))}
