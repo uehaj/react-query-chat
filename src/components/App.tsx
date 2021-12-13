@@ -1,6 +1,8 @@
 import React from "react";
 import ChatPanel from './ChatPanel';
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { CssBaseline } from '@material-ui/core';
+import Header from './Header';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,8 +17,10 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient} >
+      <CssBaseline />
+      <Header />
       <ChatPanel />
-    </QueryClientProvider>
+    </QueryClientProvider >
   );
 }

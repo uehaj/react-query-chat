@@ -2,59 +2,6 @@ import React, { createRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { tables, Message, User, Room } from '../fetchData';
 
-import { Theme } from '@material-ui/core/styles';
-import { Grid, makeStyles } from '@material-ui/core';
-import { MessageList, Input, Button } from 'react-chat-elements';
-import 'react-chat-elements/dist/main.css';
-const useStyles = makeStyles((theme: Theme) => ({
-  '@global': {
-    body: {
-      height: '100%',
-      overflow: 'hidden',
-      background: 'navajowhite',
-    },
-    input: {
-      fontFamily: 'verdana, ubuntu',
-    },
-    button: {
-      fontFamily: 'verdana, ubuntu',
-    },
-  },
-
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    minHeight: '90%',
-    overflow: 'auto',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-
-  navigation: {
-    minWidth: '240px',
-    maxWidth: '380px',
-    overflow: 'auto',
-  },
-
-  content: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-
-  messageList: {
-    flex: 1,
-    background: '#81b2ce',
-    minWidth: '140px',
-    overflow: 'auto',
-  },
-
-  toolbar: theme.mixins.toolbar,
-}));
-
 export default function ChatPanel() {
   const { data: messages, isFetched: messageFetched } = useQuery<Message[]>('messages', tables.messages.fetch)
   const { data: rooms } = useQuery<Room[]>('rooms', tables.rooms.fetch)
