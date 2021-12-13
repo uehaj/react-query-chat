@@ -3,6 +3,7 @@ import ChatPanel from './ChatPanel';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { CssBaseline } from '@material-ui/core';
 import Header from './Header';
+import ChatPanelBase from "./ChatPanelBase";
 
 const queryClient = new QueryClient({
   defaultOptions: {
