@@ -16,7 +16,10 @@ export type User = {
     name: string,
 }
 
-const ApiKey = "3861d79b4266bb718631e93438682a8f2ecc1d3f1a7a3cd62930df7acc3594fddc6c77ab6c8fb6e9da50f98e3758cc7c993dab22ab1072cba37c139fc4dcb9f5"
+export const FETCH_INTERVAL = 15 * 1000;
+export const STALE_TIME = 5 * 1000;
+export const EXPIRE_TIME = 10 * 1000;
+export const ApiKey = "3861d79b4266bb718631e93438682a8f2ecc1d3f1a7a3cd62930df7acc3594fddc6c77ab6c8fb6e9da50f98e3758cc7c993dab22ab1072cba37c139fc4dcb9f5"
 class TableInfo<T> {
     tableId: string;
     rawDataToData: (rawData: any) => T;
@@ -30,8 +33,8 @@ class TableInfo<T> {
         this.rawDataToData = rawDataToData;
         this.dataToRawData = dataToRawData;
     }
-    fetch = () =>
-        fetch(`/api/items/${this.tableId}/get`, {
+    fetchTable = () => {
+        return fetch(`/api/items/${this.tableId}/get`, {
             method: 'POST',
             body: JSON.stringify({
                 "ApiVersion": '1.1',
@@ -40,17 +43,23 @@ class TableInfo<T> {
         })
             .then(res => res.json())
             .then(data => {
+                if (!data.Response) {
+                    return Promise.reject("Server Error");
+                }
                 const rawData = data.Response.Data;
                 return rawData.map(this.rawDataToData)
             })
-    create = (data: T) => fetch(`/api/items/${this.tableId}/create`, {
-        method: 'POST',
-        body: JSON.stringify({
-            "ApiVersion": '1.1',
-            "ApiKey": ApiKey,
-            ...this.dataToRawData(data),
+    }
+    create = (data: T) => {
+        return fetch(`/api/items/${this.tableId}/create`, {
+            method: 'POST',
+            body: JSON.stringify({
+                "ApiVersion": '1.1',
+                "ApiKey": ApiKey,
+                ...this.dataToRawData(data),
+            })
         })
-    })
+    }
 }
 
 export const tables = {
@@ -89,3 +98,28 @@ export const tables = {
         }),
     )
 }
+
+export const queryFn = async ({ queryKey: [url] }: { queryKey: [string] }) => {
+    const res = await fetch(
+        url,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                "ApiVersion": '1.1',
+                "ApiKey": ApiKey
+            })
+        });
+    const data = await res.json();
+    if (!data.Response) {
+        throw Error(`Server Error on ${url}`);
+    }
+    return data.Response.Data;
+}
+
+export const rawMessageToMessage = (rawMessage: any): Message => ({
+    messageId: rawMessage.ResultId,
+    createdAt: rawMessage.CreatedTime,
+    userId: Number(rawMessage.ClassHash.ClassA),
+    roomId: Number(rawMessage.ClassHash.ClassB),
+    content: rawMessage.Body,
+});
