@@ -15,8 +15,8 @@ export default function LoginForm() {
         setSelectedUser(event.target.value)
     }
 
-    const handleSelect = (item: number) => {
-        queryClient.setQueryData(['loginUser'], item);
+    const handleSelect = () => {
+        queryClient.setQueryData(['loginUser'], selectedUser);
     };
 
     return (
@@ -38,7 +38,7 @@ export default function LoginForm() {
                     </Select>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleSelect(selectedUser)}>OK</Button>
+                    <Button onClick={handleSelect}>OK</Button>
                 </DialogActions>
             </Dialog>
         </div>

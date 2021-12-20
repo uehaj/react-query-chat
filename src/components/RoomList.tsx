@@ -12,11 +12,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function RoomList() {
+    const classes = useStyles();
     const queryClient = useQueryClient()
 
     const { data: rooms } = useQuery<Room[]>('rooms', tables.rooms.fetchTable)
     const { data: selectedRoom } = useQuery(['selectedRoom'], { enabled: false });
-    const classes = useStyles();
 
     const handleClick = (event: any) => {
         queryClient.setQueryData(['selectedRoom'], event.target.value);
@@ -24,7 +24,7 @@ export default function RoomList() {
 
     return (
         <>
-            Rooms:
+            閲覧するルームを選択してください:
             <ul>
                 {rooms?.map((room: Room) => (
                     <li

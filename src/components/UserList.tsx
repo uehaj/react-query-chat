@@ -15,33 +15,46 @@ export default function UserList() {
     const classes = useStyles();
     const queryClient = useQueryClient()
 
-
-    const { data: loginUser } = useQuery<number>(['loginUser'], { enabled: false })
     const { data: selectedRoom } = useQuery(['selectedRoom'], { enabled: false });
-    const { data: messages } = useQuery<Message[]>(['messagesInRoom', selectedRoom], tables.messages.fetchTable)
-    const { data: loginUsers } = useQuery<User[]>(['usersInRoom', selectedRoom], tables.users.fetchTable)
+    const { data: selectedUser } = useQuery<number>(['selectedUser'], { enabled: false, initialData: 0 });
+    const { data: messagesOnRoom } = useQuery<Message[]>(['messagesOnRoom', selectedRoom],
+        tables.messages.fetchTable,
+        {
+            select: (messages) => messages?.filter((message) => message.roomId === selectedRoom)
+        })
+    const { data: allUsers } = useQuery<User[]>(['users'], tables.users.fetchTable)
 
-    // ログインしているルームの発言をしているユーザ一覧を収集する。
-    const userIds = _.uniq(messages?.filter(
-        (message) => message.roomId === selectedRoom
-    ).map((message) => message.userId))
-    const users = loginUsers?.filter((user) => userIds.some((i) => user.userId))
+    // 指定したルームで発言をしているユーザ一IDのリストを収集する。
+    const userIds = _.uniq(messagesOnRoom?.map((message) => message.userId))
+
+    if (!allUsers) {
+        return <div>Loading...</div>
+    }
+
+    // 指定ルームにログインしているユーザ一覧
+    const usersOnTheRoom = allUsers.filter((user) =>
+        userIds?.some((i) => i === user.userId)
+    )
+
+    const handleClick = (userId: number) => {
+        queryClient.setQueryData(['selectedUser'], userId);
+    }
 
     return (
         <>
-            Users:
-            {loginUser &&
-                <ul>
-                    {users?.map((user) => (
-                        <li
-                            className={user.userId === loginUser ? classes.selected : ''}
-                            key={user.userId}
-                            value={user.userId}>
-                            {user.userId}:{user.name}
-                        </li>
-                    ))}
-                </ul>
-            }
+            発言者でフィルタ:
+            <ul>
+                {usersOnTheRoom?.map((user) => (
+                    <li
+                        onClick={handleClick.bind(undefined, user.userId)}
+                        className={user.userId === selectedUser ? classes.selected : ''}
+                        key={user.userId}
+                        value={user.userId}>
+                        {user.userId}:{user.name}
+                    </li>
+                ))}
+                <li onClick={handleClick.bind(undefined, 0)}>クリア</li>
+            </ul>
         </>
     );
 }
