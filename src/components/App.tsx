@@ -3,8 +3,9 @@ import ChatPanel from './ChatPanel';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { CssBaseline } from '@material-ui/core';
 import Header from './Header';
-import { FETCH_INTERVAL, STALE_TIME, EXPIRE_TIME } from "../fetchData";
+import { FETCH_INTERVAL, EXPIRE_TIME } from "../fetchData";
 import { ReactQueryDevtools } from 'react-query/devtools'
+import LoginForm from "./LoginForm";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,7 +13,6 @@ const queryClient = new QueryClient({
       retry: false,
       refetchOnWindowFocus: true,
       refetchInterval: FETCH_INTERVAL,
-      staleTime: STALE_TIME,
       cacheTime: EXPIRE_TIME,
     },
   }
@@ -26,7 +26,10 @@ export default function App() {
       <CssBaseline />
       <Header />
       <ChatPanel />
-      {DEBUG && <ReactQueryDevtools initialIsOpen={false} />}
+      <LoginForm />
+      <div>
+        {DEBUG && <ReactQueryDevtools />}
+      </div>
     </QueryClientProvider >
   );
 }

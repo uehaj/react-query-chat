@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core';
 import { useQuery } from 'react-query';
-import { tables, User, Message } from '../fetchData';
+import { tables, User, Message, useQS } from '../fetchData';
 import { MessageList } from 'react-chat-elements';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -16,30 +16,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function MessageArea() {
     const classes = useStyles();
 
-    const { data: loginUser } = useQuery<number>(['loginUser'], { enabled: false, initialData: 0 })
-    const { data: selectedRoom } = useQuery<number>(['selectedRoom'], { enabled: false, initialData: 0 });
-    const { data: selectedUser } = useQuery<number>(['selectedUser'], { enabled: false, initialData: 0 });
-    const { data: allUsers } = useQuery<User[]>(['users', selectedRoom], tables.users.fetchTable);
+    const loginUser = useQS<number>(['loginUser'], 0)
+    const selectedRoom = useQS<number>(['selectedRoom'], 0);
+    const selectedUser = useQS<number>(['selectedUser'], 0);
+    const { data: allUsers } = useQuery<User[]>(['users'], tables.users.fetchTable);
     const { data: selectedMessages } = useQuery<Message[]>(
-        ['messagesInRoom', selectedRoom, selectedUser],
+        ['messagesOnRoom', selectedRoom],
         tables.messages.fetchTable,
         {
-            select: (mes) => {
-                const result = mes.filter((mes) =>
-                    mes.roomId === selectedRoom && (!selectedUser || mes.userId === selectedUser)
-                )
-                return result;
-            },
+            select: (mes) => mes.filter((mes) => mes.roomId === selectedRoom)
         });
 
-    const convertedMessages = selectedMessages?.map((m) => ({
-        id: m.messageId,
-        text: m.content,
-        type: 'text',
-        date: Date.parse(m.createdAt as string),
-        title: allUsers?.find((user) => user.userId === m.userId)?.name,
-        position: m.userId === loginUser ? 'right' : 'left',
-    })).reverse()
+    const convertedMessages = selectedMessages
+        ?.filter((mes: any) => (!selectedUser || mes.userId === selectedUser))
+        .map((m) => ({
+            id: m.messageId,
+            text: m.content,
+            type: 'text',
+            date: Date.parse(m.createdAt as string),
+            title: allUsers?.find((user) => user.userId === m.userId)?.name,
+            position: m.userId === loginUser ? 'right' : 'left',
+        })).reverse()
 
     return <MessageList
         className={classes.messageList}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core';
 import { useQuery, useQueryClient } from 'react-query';
-import { tables, Room } from '../fetchData';
+import { tables, Room, useQS } from '../fetchData';
 
 const useStyles = makeStyles((theme: Theme) => ({
 
@@ -16,7 +16,7 @@ export default function RoomList() {
     const queryClient = useQueryClient()
 
     const { data: rooms } = useQuery<Room[]>('rooms', tables.rooms.fetchTable)
-    const { data: selectedRoom } = useQuery(['selectedRoom'], { enabled: false });
+    const selectedRoom = useQS(['selectedRoom']);
 
     const handleClick = (event: any) => {
         queryClient.setQueryData(['selectedRoom'], event.target.value);

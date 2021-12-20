@@ -1,15 +1,14 @@
 import React from 'react';
-import { useQuery } from 'react-query';
 
 import { Theme } from '@material-ui/core/styles';
 import { Grid, makeStyles } from '@material-ui/core';
 import RoomList from './RoomList'
 import UserList from './UserList';
-import LoginForm from './LoginForm'
 import MessageArea from './MessageArea';
 import InputArea from './InputArea';
 
 import 'react-chat-elements/dist/main.css';
+import { useQS } from '../fetchData';
 
 const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
@@ -56,32 +55,33 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function ChatPanel() {
   const classes = useStyles();
+  const selectedRoom = useQS(['selectedRoom']);
 
-  const { data: loginUser } = useQuery<number>(['loginUser'], { enabled: false, initialData: 0 })
-
+  const loginUser = useQS<number>(['loginUser'], 0)
   return (
     <>
       <Grid className={classes.root}>
         <nav className={classes.navigation}>
           <div className={classes.toolbar} />
-          {loginUser &&
+          {loginUser !== 0 &&
             <>
               <RoomList />
               <UserList />
             </>
           }
+          <div>
+          </div>
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {loginUser !== 0 &&
             <>
               <MessageArea />
-              <InputArea />
+              {selectedRoom && <InputArea />}
             </>
           }
         </main>
       </Grid >
-      <LoginForm />
     </>
   );
 }

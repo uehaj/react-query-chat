@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core';
 import { useQuery, useQueryClient } from 'react-query';
-import { Message, tables, User } from '../fetchData';
+import { Message, tables, useQS, User } from '../fetchData';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -15,8 +15,8 @@ export default function UserList() {
     const classes = useStyles();
     const queryClient = useQueryClient()
 
-    const { data: selectedRoom } = useQuery(['selectedRoom'], { enabled: false });
-    const { data: selectedUser } = useQuery<number>(['selectedUser'], { enabled: false, initialData: 0 });
+    const selectedRoom = useQS<number>(['selectedRoom']);
+    const selectedUser = useQS<number>(['selectedUser'], 0);
     const { data: messagesOnRoom } = useQuery<Message[]>(['messagesOnRoom', selectedRoom],
         tables.messages.fetchTable,
         {

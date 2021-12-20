@@ -1,8 +1,8 @@
 import React from 'react';
 import { Theme } from '@material-ui/core/styles';
 import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/core';
-import { useQuery, useQueryClient } from 'react-query';
-import { User } from '../fetchData';
+import { useQueryClient } from 'react-query';
+import { useQS, User } from '../fetchData';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -15,8 +15,8 @@ export default function Header() {
     const classes = useStyles();
     const queryClient = useQueryClient()
 
-    const { data: loginUser } = useQuery<number>(['loginUser'], { enabled: false })
-    const { data: allUsers } = useQuery<User[]>(['users'], { enabled: false })
+    const loginUser = useQS<number>(['loginUser'])
+    const allUsers = useQS<User[]>(['users'])
 
     return (
         <AppBar position="fixed" color="primary">

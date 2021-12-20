@@ -1,20 +1,29 @@
 import React, { createRef } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { Input, Button } from 'react-chat-elements';
 
-import { tables } from '../fetchData';
+import { tables, useQS } from '../fetchData';
 
 export default function InputArea() {
-    const { data: loginUser } = useQuery<number>(['loginUser'], { enabled: false, initialData: 0 })
-    const { data: selectedRoom } = useQuery<number>(['selectedRoom'], { enabled: false, initialData: 0 });
+    const loginUser = useQS<number>(['loginUser'], 0)
+    const selectedRoom = useQS<number>(['selectedRoom'], 0);
+    const queryClient = useQueryClient();
 
-    const mutation = useMutation(tables.messages.create);
+    const mutation = useMutation(tables.messages.create, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['messagesOnRoom', selectedRoom])
+        }
+    });
 
     const inputRef = createRef<HTMLInputElement>();
 
     function postMessage(e: any) {
         if (inputRef.current && loginUser && selectedRoom) {
-            mutation.mutate({ userId: loginUser, roomId: selectedRoom, content: (inputRef.current as any).input.value });
+            mutation.mutate({
+                userId: loginUser,
+                roomId: selectedRoom,
+                content: (inputRef.current as any).input.value,
+            });
             (inputRef.current as any).clear();
             e.target.value = '';
         }

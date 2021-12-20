@@ -1,3 +1,5 @@
+import { QueryKey, useQuery } from "react-query";
+
 export type Message = {
     messageId?: number,
     createdAt?: string,
@@ -17,7 +19,6 @@ export type User = {
 }
 
 export const FETCH_INTERVAL = 15 * 1000;
-export const STALE_TIME = 5 * 1000;
 export const EXPIRE_TIME = 10 * 1000;
 export const ApiKey = "3861d79b4266bb718631e93438682a8f2ecc1d3f1a7a3cd62930df7acc3594fddc6c77ab6c8fb6e9da50f98e3758cc7c993dab22ab1072cba37c139fc4dcb9f5"
 class TableInfo<T> {
@@ -123,3 +124,10 @@ export const rawMessageToMessage = (rawMessage: any): Message => ({
     roomId: Number(rawMessage.ClassHash.ClassB),
     content: rawMessage.Body,
 });
+
+export function useQS<T>(key: QueryKey, initial?: T): T {
+    return useQuery<T>(key, {
+        enabled: false,
+        ...(initial ? { initialData: initial } : {})
+    }).data as T;
+}
