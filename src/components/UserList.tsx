@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core';
-import { useQuery, useQueryClient } from 'react-query';
-import { Message, tables, useQS, User } from '../fetchData';
+import { useQuery } from 'react-query';
+import { Message, tables, useQState, User } from '../fetchData';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -13,10 +13,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function UserList() {
     const classes = useStyles();
-    const queryClient = useQueryClient()
 
-    const selectedRoom = useQS<number>(['selectedRoom']);
-    const selectedUser = useQS<number>(['selectedUser'], 0);
+    const [selectedRoom] = useQState<number>(['selectedRoom']);
+    const [selectedUser, setSelectedUser] = useQState<number>(['selectedUser'], 0);
     const { data: messagesOnRoom } = useQuery<Message[]>(['messagesOnRoom', selectedRoom],
         tables.messages.fetchTable,
         {
@@ -37,7 +36,7 @@ export default function UserList() {
     )
 
     const handleClick = (userId: number) => {
-        queryClient.setQueryData(['selectedUser'], userId);
+        setSelectedUser(userId);
     }
 
     return (
@@ -53,7 +52,7 @@ export default function UserList() {
                         {user.userId}:{user.name}
                     </li>
                 ))}
-                <li onClick={handleClick.bind(undefined, 0)}>クリア</li>
+                <li onClick={handleClick.bind(undefined, 0)}>フィルタクリア</li>
             </ul>
         </>
     );

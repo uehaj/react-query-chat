@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core';
 import { useQuery } from 'react-query';
-import { tables, User, Message, useQS } from '../fetchData';
+import { tables, User, Message, useQState } from '../fetchData';
 import { MessageList } from 'react-chat-elements';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -16,9 +16,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function MessageArea() {
     const classes = useStyles();
 
-    const loginUser = useQS<number>(['loginUser'], 0)
-    const selectedRoom = useQS<number>(['selectedRoom'], 0);
-    const selectedUser = useQS<number>(['selectedUser'], 0);
+    const [loginUser] = useQState<number>(['loginUser'], 0)
+    const [selectedRoom] = useQState<number>(['selectedRoom'], 0);
+    const [selectedUser] = useQState<number>(['selectedUser'], 0);
     const { data: allUsers } = useQuery<User[]>(['users'], tables.users.fetchTable);
     const { data: selectedMessages } = useQuery<Message[]>(
         ['messagesOnRoom', selectedRoom],

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Theme } from '@material-ui/core/styles';
 import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/core';
-import { useQueryClient } from 'react-query';
-import { useQS, User } from '../fetchData';
+import { useQState, User } from '../fetchData';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -13,10 +12,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function Header() {
     const classes = useStyles();
-    const queryClient = useQueryClient()
 
-    const loginUser = useQS<number>(['loginUser'])
-    const allUsers = useQS<User[]>(['users'])
+    const [loginUser, setLoginUser] = useQState<number>(['loginUser'])
+    const [allUsers] = useQState<User[]>(['users'])
 
     return (
         <AppBar position="fixed" color="primary">
@@ -30,7 +28,7 @@ export default function Header() {
                 {
                     loginUser ?
                         <Button color="inherit" onClick={
-                            () => { queryClient.setQueryData(['loginUser'], 0) }
+                            () => { setLoginUser(0) }
                         }><ExitToAppIcon /></Button> : ''
                 }
             </Toolbar>

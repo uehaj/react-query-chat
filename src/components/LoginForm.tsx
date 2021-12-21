@@ -1,22 +1,20 @@
 import * as React from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Select } from '@material-ui/core';
-import { useQuery, useQueryClient } from 'react-query';
-import { User, tables, useQS } from '../fetchData';
+import { useQuery } from 'react-query';
+import { User, tables, useQState } from '../fetchData';
 import { useState } from 'react';
 
 export default function LoginForm() {
-    const queryClient = useQueryClient()
-
     const [selectedUser, setSelectedUser] = useState(0);
     const { data: users } = useQuery<User[]>(['users'], tables.users.fetchTable)
-    const loginUser = useQS<number>(['loginUser']);
+    const [loginUser, setLoginUser] = useQState<number>(['loginUser']);
 
     const handleChange = (event: any) => {
         setSelectedUser(event.target.value)
     }
 
     const handleSelect = () => {
-        queryClient.setQueryData(['loginUser'], selectedUser);
+        setLoginUser(selectedUser);
     };
 
     return (

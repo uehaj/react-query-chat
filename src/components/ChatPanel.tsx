@@ -8,7 +8,7 @@ import MessageArea from './MessageArea';
 import InputArea from './InputArea';
 
 import 'react-chat-elements/dist/main.css';
-import { useQS } from '../fetchData';
+import { useQState } from '../fetchData';
 
 const useStyles = makeStyles((theme: Theme) => ({
   '@global': {
@@ -55,9 +55,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function ChatPanel() {
   const classes = useStyles();
-  const selectedRoom = useQS(['selectedRoom']);
-
-  const loginUser = useQS<number>(['loginUser'], 0)
+  const [selectedRoom] = useQState<number>(['selectedRoom']);
+  const [loginUser] = useQState<number>(['loginUser'], 0)
   return (
     <>
       <Grid className={classes.root}>

@@ -2,11 +2,11 @@ import React, { createRef } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { Input, Button } from 'react-chat-elements';
 
-import { tables, useQS } from '../fetchData';
+import { tables, useQState } from '../fetchData';
 
 export default function InputArea() {
-    const loginUser = useQS<number>(['loginUser'], 0)
-    const selectedRoom = useQS<number>(['selectedRoom'], 0);
+    const [loginUser] = useQState<number>(['loginUser'], 0)
+    const [selectedRoom] = useQState<number>(['selectedRoom'], 0);
     const queryClient = useQueryClient();
 
     const mutation = useMutation(tables.messages.create, {
