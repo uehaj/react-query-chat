@@ -1,0 +1,83 @@
+﻿{
+  "HeaderInfo": {
+    "BaseSiteId": 446,
+    "Server": "http://localhost.ntt-tx.co.jp:81",
+    "CreatorName": "Administrator",
+    "PackageTime": "2021-12-22T10:07:45.2254563+00:00",
+    "Convertors": [
+      {
+        "SiteId": 446,
+        "SiteTitle": "users",
+        "ReferenceType": "Results",
+        "IncludeData": false
+      }
+    ],
+    "IncludeSitePermission": true,
+    "IncludeRecordPermission": true,
+    "IncludeColumnPermission": true,
+    "IncludeNotifications": true,
+    "IncludeReminders": true
+  },
+  "Sites": [
+    {
+      "TenantId": 1,
+      "SiteId": 446,
+      "Title": "users",
+      "Body": "",
+      "GridGuide": "",
+      "EditorGuide": "",
+      "ReferenceType": "Results",
+      "ParentId": 0,
+      "InheritPermission": 446,
+      "SiteSettings": {
+        "Version": 1.017,
+        "ReferenceType": "Results",
+        "GridColumns": [
+          "ResultId",
+          "Title"
+        ],
+        "EditorColumnHash": {
+          "General": [
+            "ResultId",
+            "Title"
+          ]
+        },
+        "Columns": [
+          {
+            "ColumnName": "ResultId",
+            "LabelText": "userId"
+          }
+        ],
+        "NoDisplayIfReadOnly": false
+      },
+      "Publish": false,
+      "DisableCrossSearch": false,
+      "Comments": []
+    }
+  ],
+  "Data": [],
+  "Permissions": [
+    {
+      "SiteId": 446,
+      "Permissions": [
+        {
+          "ReferenceId": 446,
+          "DeptId": 0,
+          "GroupId": 0,
+          "UserId": 1,
+          "PermissionType": 511
+        }
+      ]
+    }
+  ],
+  "PermissionIdList": {
+    "DeptIdList": [],
+    "GroupIdList": [],
+    "UserIdList": [
+      {
+        "UserId": 1,
+        "LoginId": "Administrator"
+      }
+    ]
+  }
+}

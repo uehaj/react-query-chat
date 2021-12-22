@@ -6,8 +6,12 @@ import { useState } from 'react';
 
 export default function LoginForm() {
     const [selectedUser, setSelectedUser] = useState(0);
-    const { data: users } = useQuery<User[]>(['users'], tables.users.fetchTable)
+    const { data: users, error } = useQuery<User[]>(['users'], tables.users.fetchTable)
     const [loginUser, setLoginUser] = useQState<number>(['loginUser']);
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
 
     const handleChange = (event: any) => {
         setSelectedUser(event.target.value)

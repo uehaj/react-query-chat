@@ -1,7 +1,8 @@
 import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
 import { useQuery } from 'react-query';
 import { Message, tables, useQState, User } from '../fetchData';
+import PersonIcon from '@material-ui/icons/Person';
 import _ from 'lodash';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -21,10 +22,14 @@ export default function UserList() {
         {
             select: (messages) => messages?.filter((message) => message.roomId === selectedRoom)
         })
-    const { data: allUsers } = useQuery<User[]>(['users'], tables.users.fetchTable)
+    const { data: allUsers, error } = useQuery<User[]>(['users'], tables.users.fetchTable)
 
     // 指定したルームで発言をしているユーザ一IDのリストを収集する。
     const userIds = _.uniq(messagesOnRoom?.map((message) => message.userId))
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
 
     if (!allUsers) {
         return <div>Loading...</div>
@@ -38,22 +43,27 @@ export default function UserList() {
     const handleClick = (userId: number) => {
         setSelectedUser(userId);
     }
-
+    console.log(`messagesOnRoom=`, messagesOnRoom)
     return (
         <>
-            発言者でフィルタ:
-            <ul>
+            <Typography>発言者でフィルタ:</Typography>
+            <List >
                 {usersOnTheRoom?.map((user) => (
-                    <li
+                    <ListItem
                         onClick={handleClick.bind(undefined, user.userId)}
                         className={user.userId === selectedUser ? classes.selected : ''}
                         key={user.userId}
                         value={user.userId}>
-                        {user.userId}:{user.name}
-                    </li>
+                        <ListItemIcon>
+                            <PersonIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={`${user.userId}:${user.name}`} />
+                    </ListItem>
                 ))}
-                <li onClick={handleClick.bind(undefined, 0)}>フィルタクリア</li>
-            </ul>
+                <ListItem onClick={handleClick.bind(undefined, 0)}>
+                    <ListItemText primary="フィルタクリア" />
+                </ListItem>
+            </List>
         </>
     );
 }

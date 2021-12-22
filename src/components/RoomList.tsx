@@ -1,5 +1,8 @@
 import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
+//import DraftsIcon from '@material-ui/icons/Drafts';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+
 import { useQuery } from 'react-query';
 import { tables, Room, useQState } from '../fetchData';
 
@@ -14,27 +17,34 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function RoomList() {
     const classes = useStyles();
 
-    const { data: rooms } = useQuery<Room[]>('rooms', tables.rooms.fetchTable)
+    const { data: rooms, error } = useQuery<Room[]>('rooms', tables.rooms.fetchTable)
     const [selectedRoom, setSelectedRoom] = useQState<number>(['selectedRoom']);
 
-    const handleClick = (event: any) => {
-        setSelectedRoom(event.target.value);
+    const handleClick = (room: number) => {
+        setSelectedRoom(room);
     };
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
 
     return (
         <>
-            閲覧するルームを選択してください:
-            <ul>
-                {rooms?.map((room: Room) => (
-                    <li
+            <Typography>閲覧するルームを選択してください:</Typography >
+            <List >
+                {rooms?.map((room) => (
+                    <ListItem
+                        onClick={() => handleClick(room.roomId)}
                         className={room.roomId === selectedRoom ? classes.selected : ''}
                         key={room.roomId}
-                        onClick={handleClick}
                         value={room.roomId}>
-                        {room.roomId}:{room.name}
-                    </li>
+                        <ListItemIcon>
+                            <MeetingRoomIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={`${room.roomId}:${room.name}`} />
+                    </ListItem>
                 ))}
-            </ul>
+            </List>
         </>
     );
 }

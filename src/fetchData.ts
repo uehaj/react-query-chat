@@ -21,7 +21,11 @@ export type User = {
 
 export const FETCH_INTERVAL = 15 * 1000;
 export const EXPIRE_TIME = 10 * 1000;
-export const ApiKey = "3861d79b4266bb718631e93438682a8f2ecc1d3f1a7a3cd62930df7acc3594fddc6c77ab6c8fb6e9da50f98e3758cc7c993dab22ab1072cba37c139fc4dcb9f5"
+export const APIKEY = process.env.REACT_APP_APIKEY ?? 'Please setup API key'
+
+const TABLE_ID_MESSAGES = process.env.REACT_APP_TABLE_ID_MESSAGES ?? 'Please setup users table ID(site id)'
+const TABLE_ID_ROOMS = process.env.REACT_APP_TABLE_ID_ROOMS ?? 'Please setup rooms table ID(site id)'
+const TABLE_ID_USERS = process.env.REACT_APP_TABLE_ID_USERS ?? 'Please setup messages table ID(site id)'
 class TableInfo<T> {
     tableId: string;
     rawDataToData: (rawData: any) => T;
@@ -40,7 +44,7 @@ class TableInfo<T> {
             method: 'POST',
             body: JSON.stringify({
                 "ApiVersion": '1.1',
-                "ApiKey": ApiKey
+                "ApiKey": APIKEY,
             })
         })
             .then(res => res.json())
@@ -57,7 +61,7 @@ class TableInfo<T> {
             method: 'POST',
             body: JSON.stringify({
                 "ApiVersion": '1.1',
-                "ApiKey": ApiKey,
+                "ApiKey": APIKEY,
                 ...this.dataToRawData(data),
             })
         })
@@ -65,7 +69,7 @@ class TableInfo<T> {
 }
 
 export const tables = {
-    messages: new TableInfo<Message>('448',
+    messages: new TableInfo<Message>(TABLE_ID_MESSAGES,
         (rawMessage: any) => ({
             messageId: rawMessage.ResultId,
             createdAt: rawMessage.CreatedTime,
@@ -81,7 +85,7 @@ export const tables = {
             Body: message.content,
         })
     ),
-    rooms: new TableInfo<Room>('449',
+    rooms: new TableInfo<Room>(TABLE_ID_ROOMS,
         (rawRoom: any) => ({
             roomId: rawRoom.ResultId,
             name: rawRoom.Title,
@@ -90,7 +94,7 @@ export const tables = {
             Title: room.name
         }),
     ),
-    users: new TableInfo<User>('446',
+    users: new TableInfo<User>(TABLE_ID_USERS,
         (rawUser: any) => ({
             userId: rawUser.ResultId,
             name: rawUser.Title,
@@ -108,7 +112,7 @@ export const queryFn = async ({ queryKey: [url] }: { queryKey: [string] }) => {
             method: 'POST',
             body: JSON.stringify({
                 "ApiVersion": '1.1',
-                "ApiKey": ApiKey
+                "ApiKey": APIKEY
             })
         });
     const data = await res.json();

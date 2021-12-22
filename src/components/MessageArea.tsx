@@ -19,7 +19,8 @@ export default function MessageArea() {
     const [loginUser] = useQState<number>(['loginUser'], 0)
     const [selectedRoom] = useQState<number>(['selectedRoom'], 0);
     const [selectedUser] = useQState<number>(['selectedUser'], 0);
-    const { data: allUsers } = useQuery<User[]>(['users'], tables.users.fetchTable);
+    const { data: allUsers, error } = useQuery<User[]>(['users'], tables.users.fetchTable);
+
     const { data: selectedMessages } = useQuery<Message[]>(
         ['messagesOnRoom', selectedRoom],
         tables.messages.fetchTable,
@@ -37,6 +38,10 @@ export default function MessageArea() {
             title: allUsers?.find((user) => user.userId === m.userId)?.name,
             position: m.userId === loginUser ? 'right' : 'left',
         })).reverse()
+
+    if (error) {
+        return <div>Error: {error}</div>
+    }
 
     return <MessageList
         className={classes.messageList}

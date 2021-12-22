@@ -1,0 +1,87 @@
+﻿{
+  "HeaderInfo": {
+    "BaseSiteId": 449,
+    "Server": "http://localhost.ntt-tx.co.jp:81",
+    "CreatorName": "Administrator",
+    "PackageTime": "2021-12-22T10:07:15.3816741+00:00",
+    "Convertors": [
+      {
+        "SiteId": 449,
+        "SiteTitle": "rooms",
+        "ReferenceType": "Results",
+        "IncludeData": false
+      }
+    ],
+    "IncludeSitePermission": true,
+    "IncludeRecordPermission": true,
+    "IncludeColumnPermission": true,
+    "IncludeNotifications": true,
+    "IncludeReminders": true
+  },
+  "Sites": [
+    {
+      "TenantId": 1,
+      "SiteId": 449,
+      "Title": "rooms",
+      "Body": "",
+      "GridGuide": "",
+      "EditorGuide": "",
+      "ReferenceType": "Results",
+      "ParentId": 0,
+      "InheritPermission": 449,
+      "SiteSettings": {
+        "Version": 1.017,
+        "ReferenceType": "Results",
+        "GridColumns": [
+          "ResultId",
+          "Title"
+        ],
+        "EditorColumnHash": {
+          "General": [
+            "ResultId",
+            "Title"
+          ]
+        },
+        "Columns": [
+          {
+            "ColumnName": "ResultId",
+            "LabelText": "roomId"
+          },
+          {
+            "ColumnName": "Title",
+            "LabelText": "name"
+          }
+        ],
+        "NoDisplayIfReadOnly": false
+      },
+      "Publish": false,
+      "DisableCrossSearch": false,
+      "Comments": []
+    }
+  ],
+  "Data": [],
+  "Permissions": [
+    {
+      "SiteId": 449,
+      "Permissions": [
+        {
+          "ReferenceId": 449,
+          "DeptId": 0,
+          "GroupId": 0,
+          "UserId": 1,
+          "PermissionType": 511
+        }
+      ]
+    }
+  ],
+  "PermissionIdList": {
+    "DeptIdList": [],
+    "GroupIdList": [],
+    "UserIdList": [
+      {
+        "UserId": 1,
+        "LoginId": "Administrator"
+      }
+    ]
+  }
+}

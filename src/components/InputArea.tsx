@@ -29,24 +29,28 @@ export default function InputArea() {
         }
     }
 
-    return <Input
-        placeholder="Type here..."
-        ref={inputRef}
-        autofocus={true}
-        rightButtons={
-            <Button
-                text="Send"
-                onClick={(event: any) => {
-                    postMessage(event);
-                    event.preventDefault();
-                }} />
-        }
-        onKeyPress={(event: any) => {
-            if (event.key === 'Enter') {
-                postMessage(event);
-                event.preventDefault();
-            }
-        }}
-    />;
+    return (
+        <>
+            <Input
+                placeholder="Type here..."
+                ref={inputRef}
+                autofocus={true}
+                rightButtons={
+                    <Button
+                        text="Send"
+                        onClick={(event: any) => {
+                            postMessage(event);
+                            event.preventDefault();
+                        }}
+                    />
+                }
+                onKeyPress={(event: any) => {
+                    if (event.key === 'Enter') {
+                        postMessage(event);
+                        event.preventDefault();
+                    }
+                }}
+            />
+        </>);
 }
 
