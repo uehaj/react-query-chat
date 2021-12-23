@@ -12,7 +12,7 @@ React-Queryを使ったチャットです。画面は以下のとおり。
 
 ![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/9979/69d5250c-750d-9ba9-cbca-527db951c0fc.png)
 
-Plesanterとは何かというと、インプリムという会社が作っているオープンソースのいわゆる「ローコード・ノーコードプラットフォーム」っつうやつで、さまざまなアプリを作れるのですが、ここではPostgresをWebインターフェースで操作できるもの、特にWeb APIを自動生成してくれるものとして使います。
+Plesanterはオープンソースのいわゆる「ローコード・ノーコードプラットフォーム」で、ここではPostgresをWebインターフェースで操作できるもの、特にWeb APIを自動生成してくれるものとして使います。
 docker composeを用意してくださっている方がいらっしゃるので、以下のような手順でdockerで実行しローカルでデータベースを準備しておきます。
 
 ```bash

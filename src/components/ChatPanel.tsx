@@ -58,8 +58,6 @@ export default function ChatPanel() {
   const [selectedRoom] = useQState<number>(['selectedRoom']);
   const [loginUser] = useQState<number>(['loginUser'], 0)
 
-  const [counter, setCounter] = useQState<number>(["counter"], 0)
-
   return (
     <>
       <Grid className={classes.root}>
@@ -76,14 +74,6 @@ export default function ChatPanel() {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div>count = {counter}</div>
-          <div>test = {test}</div>
-          <button onClick={
-            () => setCounter((prevValue) => prevValue + 1)
-          }>Increment counter</button>
-          <button onClick={
-            () => setCounter(5)
-          }>SET counter to 5</button>
           {loginUser !== 0 &&
             <>
               <MessageArea />
