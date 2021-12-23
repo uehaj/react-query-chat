@@ -43,7 +43,7 @@ export default function UserList() {
     const handleClick = (userId: number) => {
         setSelectedUser(userId);
     }
-    console.log(`messagesOnRoom=`, messagesOnRoom)
+
     return (
         <>
             <Typography>発言者でフィルタ:</Typography>

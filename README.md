@@ -1,46 +1,48 @@
-# Getting Started with Create React App
+# React Query Chat Sample
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## これは何か
 
-## Available Scripts
+React-Queryを使ったチャットです。画面は以下のとおり。
 
-In the project directory, you can run:
+https://camo.qiitausercontent.com/ec77b7d4c9cc16cc7384a2187e296fbff9987c46/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e61702d6e6f727468656173742d312e616d617a6f6e6177732e636f6d2f302f393937392f61303932626638642d373366622d316363352d363033642d6661623236393435653965332e706e67
+## Pleasanterを使ったサーバサイドの実装
 
-### `yarn start`
+サーバサイド実装として[Pleasanter](https://github.com/Implem/Implem.Pleasanter)を使って簡単に作ります。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/9979/69d5250c-750d-9ba9-cbca-527db951c0fc.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Plesanterとは何かというと、インプリムという会社が作っているオープンソースのいわゆる「ローコード・ノーコードプラットフォーム」っつうやつで、さまざまなアプリを作れるのですが、ここではPostgresをWebインターフェースで操作できるもの、特にWeb APIを自動生成してくれるものとして使います。
+docker composeを用意してくださっている方がいらっしゃるので、以下のような手順でdockerで実行しローカルでデータベースを準備しておきます。
 
-### `yarn test`
+```bash
+$ git clone https://github.com/yamada28go/pleasanter-docker-PostgreSQL server
+$ cd server
+$ docker compose build
+$ docker compose up -d 
+$ docker compose exec pleasanter-web cmdnetcore/codedefiner.sh
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+サイト生成(いわゆるテーブル生成)のために、[こちら](https://github.com/uehaj/react-query-chat/tree/master/schema)のサイトパッケージ3つをインポートした上で、初期ユーザと初期ルームをそれぞれusers、roomsサイトに生成しておきます。
 
-### `yarn build`
+- usersへの追加 ![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/9979/32eb8907-0788-39aa-5fa1-659c267ed321.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- roomsへの追加 ![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/9979/fa72d2da-f2c7-0258-ae77-ebb24137a23f.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+この裏ではPostgresが起動しています。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## クライアント設定
 
-### `yarn eject`
+その上でPleasanterの管理画面から得る以下の情報をcreate-react-appのトップディレクトリの.envファイルに転記すれば準備完了です。
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```env
+REACT_APP_APIKEY=<Pleasanter API key>
+REACT_APP_TABLE_ID_USERS=<users table ID(site id)>
+REACT_APP_TABLE_ID_ROOMS=<rooms table ID(site id)>
+REACT_APP_TABLE_ID_MESSAGES=<messages table ID(site id)>
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## クライント起動
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+npm run start
+```

@@ -133,7 +133,7 @@ export const rawMessageToMessage = (rawMessage: any): Message => ({
 export function useQState<T>(key: QueryKey, initial?: T): [T, Dispatch<SetStateAction<T>>] {
     const stateValue = useQuery<T>(key, {
         enabled: false,
-        ...(initial ? { initialData: initial } : {})
+        ...((initial !== undefined) ? { initialData: initial } : {})
     }).data as T;
     const queryClient = useQueryClient();
     const stateSetter = (arg: ((arg: T) => void) | T): void => {
