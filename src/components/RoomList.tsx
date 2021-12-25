@@ -1,10 +1,11 @@
 import React from 'react';
-import { List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
-//import DraftsIcon from '@material-ui/icons/Drafts';
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import { Typography, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoomOutlined';
 
 import { useQuery } from 'react-query';
 import { tables, Room, useQState } from '../fetchData';
+import { Theme } from '@emotion/react';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
 

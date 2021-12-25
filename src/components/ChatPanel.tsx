@@ -1,7 +1,6 @@
 import React from 'react';
-
-import { Theme } from '@material-ui/core/styles';
-import { Grid, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Grid, Theme } from '@mui/material';
 import RoomList from './RoomList'
 import UserList from './UserList';
 import MessageArea from './MessageArea';

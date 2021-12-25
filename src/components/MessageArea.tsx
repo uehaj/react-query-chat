@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 import { useQuery } from 'react-query';
 import { tables, User, Message, useQState } from '../fetchData';
 import { MessageList } from 'react-chat-elements';

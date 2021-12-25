@@ -1,8 +1,9 @@
 import React from 'react';
-import { Theme } from '@material-ui/core/styles';
-import { AppBar, Button, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import { Theme } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useQState, User } from '../fetchData';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const useStyles = makeStyles((theme: Theme) => ({
     title: {

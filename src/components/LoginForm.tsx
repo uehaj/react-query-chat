@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Select } from '@material-ui/core';
+import React from 'react';
+import { Dialog, DialogTitle, DialogContent, Select, MenuItem, DialogActions, Button } from '@mui/material';
 import { useQuery } from 'react-query';
 import { User, tables, useQState } from '../fetchData';
 import { useState } from 'react';

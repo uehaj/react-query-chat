@@ -1,7 +1,7 @@
 import React from "react";
 import ChatPanel from './ChatPanel';
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline } from "@mui/material";
 import Header from './Header';
 import { FETCH_INTERVAL, EXPIRE_TIME } from "../fetchData";
 import { ReactQueryDevtools } from 'react-query/devtools'
