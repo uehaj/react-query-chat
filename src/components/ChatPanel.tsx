@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     body: {
       height: '100%',
       overflow: 'hidden',
-      background: 'navajowhite',
     },
     input: {
       fontFamily: 'verdana, ubuntu',
@@ -34,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: 0,
     left: 0,
     right: 0,
+    background: 'navajowhite',
   },
 
   navigation: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: '380px',
     overflow: 'auto',
     padding: '1rem',
-    background: '#ffcc33',
+    //    background: '#ffcc33',
   },
 
   content: {
