@@ -1,4 +1,5 @@
 import React from "react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ChatPanel from './ChatPanel';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { CssBaseline } from "@mui/material";
@@ -21,15 +22,19 @@ const queryClient = new QueryClient({
 const DEBUG = true;
 
 export default function App() {
+  const theme = createTheme();
+
   return (
     <QueryClientProvider client={queryClient} >
-      <CssBaseline />
-      <Header />
-      <ChatPanel />
-      <LoginForm />
-      <div>
-        {DEBUG && <ReactQueryDevtools />}
-      </div>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header />
+        <ChatPanel />
+        <LoginForm />
+        <div>
+          {DEBUG && <ReactQueryDevtools />}
+        </div>
+      </ThemeProvider>
     </QueryClientProvider >
   );
 }

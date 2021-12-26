@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: '380px',
     overflow: 'auto',
     padding: '1rem',
+    background: '#ffcc33',
   },
 
   content: {

@@ -31,7 +31,7 @@
     "eject": "react-scripts eject",
     "build-server-prepare": "git clone https://github.com/yamada28go/pleasanter-docker-PostgreSQL server",
     "build-server": "cd server && docker compose build && docker compose up -d && docker compose exec pleasanter-web cmdnetcore/codedefiner.sh",
-    "run-server": "docker compose up -d"
+    "run-server": "cd server && docker compose up -d"
   },
   "eslintConfig": {
     "extends": [
